@@ -4,6 +4,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
+import ringed_strawberry.github.io.spacelib.math.util.MathUtil;
 
 public class BlockHitUtil {
     public static Vec3d getInteractAt(BlockHitResult hit){
@@ -25,5 +26,38 @@ public class BlockHitUtil {
         if(x == 0 ||x == 1)
             return new Vec2f(y,z);
         return new Vec2f(x,y);
+    }
+
+    public static Vec2f getVec2fInteractAt(BlockPos bPos, Vec3d pos){
+        float x = (float) (pos.getX() + bPos.getX()*-1);
+        float y = (float) (pos.getY() + bPos.getY()*-1);
+        float z = (float) (pos.getZ() + bPos.getZ()*-1);
+        if(z == 0 || z == 1)
+            return new Vec2f(x,y);
+        if(y == 0 || y == 1)
+            return new Vec2f(x,z);
+        if(x == 0 ||x == 1)
+            return new Vec2f(y,z);
+        return new Vec2f(x,y);
+    }
+
+    public static boolean isInteractionInRange(BlockHitResult hit, float x, float y, float radius){
+        return MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(hit).x, x, radius) &&
+                MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(hit).y, y, radius);
+    }
+
+    public static boolean isInteractionInRange(BlockPos bPos, Vec3d pos, float x, float y, float radius){
+        return MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(bPos, pos).x, x, radius) &&
+                MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(bPos, pos).y, y, radius);
+    }
+
+    public static boolean isInteractionInRange(BlockHitResult hit, float x, float y, int pixels){
+        return MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(hit).x, x, pixels) &&
+                MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(hit).y, y, pixels);
+    }
+
+    public static boolean isInteractionInRange(BlockPos bPos, Vec3d pos, float x, float y, int pixels){
+        return MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(bPos, pos).x, x, pixels) &&
+                MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(bPos, pos).y, y, pixels);
     }
 }
