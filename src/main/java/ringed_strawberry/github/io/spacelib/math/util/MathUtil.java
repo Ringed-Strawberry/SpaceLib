@@ -5,11 +5,11 @@ public class MathUtil {
         return input <= max && input >= min;
     }
 
-    public static boolean isInRange(float input, float range){
-        return input <= input-range && input >= input+range;
+    public static boolean isInRange(float input, float range, float radius){
+        return input <= range-radius && input >= range+radius;
     }
 
-    public static boolean isInRange(float input, int pixels){
-        return input <= input-pixels*0.07 && input >= input+pixels*0.07;
+    public static boolean isInRange(float input, float range, int pixels){
+        return input <= range-pixels*0.07 && input >= range+pixels*0.07;
     }
 }
