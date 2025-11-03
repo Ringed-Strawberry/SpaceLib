@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 import java.util.Optional;
 
 public class ItemDatagenUtil {
-    public final void registerWithFourTints(ItemModelGenerator itemModelGenerator, Item item, TintSource tint, TintSource tint1, TintSource tint2, TintSource tint3){
+    public static void registerWithFourTints(ItemModelGenerator itemModelGenerator, Item item, TintSource tint, TintSource tint1, TintSource tint2, TintSource tint3){
         Identifier identifier = uploadFourLayers(item, TextureMap.getId(item),
                 TextureMap.getSubId(item, "_tinted1"),
                 TextureMap.getSubId(item, "_tinted2"),
@@ -17,7 +17,7 @@ public class ItemDatagenUtil {
         itemModelGenerator.output.accept(item, ItemModels.tinted(identifier, new TintSource[]{tint,tint1,tint2,tint3}));
     }
 
-    public final void registerWithFiveTints(ItemModelGenerator itemModelGenerator, Item item, TintSource tint, TintSource tint1, TintSource tint2, TintSource tint3, TintSource tint4){
+    public static void registerWithFiveTints(ItemModelGenerator itemModelGenerator, Item item, TintSource tint, TintSource tint1, TintSource tint2, TintSource tint3, TintSource tint4){
         Identifier identifier = uploadFiveLayers(item, TextureMap.getId(item),
                 TextureMap.getSubId(item, "_tinted1"),
                 TextureMap.getSubId(item, "_tinted2"),
@@ -27,11 +27,11 @@ public class ItemDatagenUtil {
         itemModelGenerator.output.accept(item, ItemModels.tinted(identifier, new TintSource[]{tint,tint1,tint2,tint3,tint4}));
     }
 
-    public final Identifier uploadFourLayers(Item item, Identifier layer0, Identifier layer1, Identifier layer2, Identifier layer3, ItemModelGenerator itemModelGenerator) {
+    public static Identifier uploadFourLayers(Item item, Identifier layer0, Identifier layer1, Identifier layer2, Identifier layer3, ItemModelGenerator itemModelGenerator) {
         return GENERATED_FOUR_LAYERS.upload(item, layered4(layer0, layer1, layer2, layer3), itemModelGenerator.modelCollector);
     }
 
-    public final Identifier uploadFiveLayers(Item item, Identifier layer0, Identifier layer1, Identifier layer2, Identifier layer3, Identifier layer4, ItemModelGenerator itemModelGenerator) {
+    public static Identifier uploadFiveLayers(Item item, Identifier layer0, Identifier layer1, Identifier layer2, Identifier layer3, Identifier layer4, ItemModelGenerator itemModelGenerator) {
         return GENERATED_FIVE_LAYERS.upload(item, layered5(layer0, layer1, layer2, layer3, layer4), itemModelGenerator.modelCollector);
     }
     public static final TextureKey LAYER3 = of("layer3");
