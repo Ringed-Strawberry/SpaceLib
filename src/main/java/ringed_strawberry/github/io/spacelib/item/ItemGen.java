@@ -15,7 +15,7 @@ public class ItemGen {
     }
 
     public static Item register(RegistryKey<Item> key, Function<Item.Settings, Item> factory, Item.Settings settings) {
-        Item item = factory.apply(settings.registryKey(key));
+        Item item = factory.apply(settings);
         return Registry.register(Registries.ITEM, key, item);
     }
 

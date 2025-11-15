@@ -6,6 +6,6 @@ import net.minecraft.registry.tag.TagKey;
 
 public class TagsUtil {
     public static boolean isInTag(BlockState state, TagKey<Block> tag){
-        return state.isIn(TagKey.of(tag.registryRef(), tag.id()));
+        return state.isIn(TagKey.of(tag.registry(), tag.id()));
     }
 }

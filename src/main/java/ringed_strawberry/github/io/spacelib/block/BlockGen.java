@@ -26,8 +26,8 @@ public class BlockGen {
     }
 
     public static Block register(RegistryKey<Block> blockKey, RegistryKey<Item> itemKey, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
-        Block block = factory.apply(settings.registryKey(blockKey));
-        Registry.register(Registries.ITEM, itemKey, new BlockItem(block, new Item.Settings().registryKey(itemKey)));
+        Block block = factory.apply(settings);
+        Registry.register(Registries.ITEM, itemKey, new BlockItem(block, new Item.Settings()));
         return Registry.register(Registries.BLOCK, blockKey, block);
     }
 }
