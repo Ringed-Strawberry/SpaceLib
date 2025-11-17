@@ -60,4 +60,30 @@ public class BlockHitUtil {
         return MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(bPos, pos).x, x, pixels) &&
                 MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(bPos, pos).y, y, pixels);
     }
+
+    //3D
+
+    public static boolean isInteractionInRange3D(BlockHitResult hit, float x, float y, float z, float radius){
+        return MathUtil.isInRange((float) BlockHitUtil.getInteractAt(hit).x, x, radius) &&
+                MathUtil.isInRange((float) BlockHitUtil.getInteractAt(hit).y, y, radius) &&
+                MathUtil.isInRange((float) BlockHitUtil.getInteractAt(hit).z, z, radius);
+    }
+
+    public static boolean isInteractionInRange3D(BlockPos bPos, Vec3d pos, float x, float y, float z, float radius){
+        return MathUtil.isInRange((float) BlockHitUtil.getInteractAt(bPos, pos).x, x, radius) &&
+                MathUtil.isInRange((float) BlockHitUtil.getInteractAt(bPos, pos).y, y, radius) &&
+                MathUtil.isInRange((float) BlockHitUtil.getInteractAt(bPos, pos).z, z, radius);
+    }
+
+    public static boolean isInteractionInRange3D(BlockHitResult hit, float x, float y, float z, int pixels){
+        return MathUtil.isInRange((float) BlockHitUtil.getInteractAt(hit).x, x, pixels) &&
+                MathUtil.isInRange((float) BlockHitUtil.getInteractAt(hit).y, y, pixels) &&
+                MathUtil.isInRange((float) BlockHitUtil.getInteractAt(hit).z, z, pixels);
+    }
+
+    public static boolean isInteractionInRange3D(BlockPos bPos, Vec3d pos, float x, float y, float z, int pixels){
+        return MathUtil.isInRange((float) BlockHitUtil.getInteractAt(bPos, pos).x, x, pixels) &&
+                MathUtil.isInRange((float) BlockHitUtil.getInteractAt(bPos, pos).y, y, pixels) &&
+                MathUtil.isInRange((float) BlockHitUtil.getInteractAt(bPos, pos).z, z, pixels);
+    }
 }
