@@ -9,8 +9,11 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
+import ringed_strawberry.github.io.spacelib.block.custom.RotatableFourTextureBlock;
 
 import java.util.function.Function;
+
+import static ringed_strawberry.github.io.spacelib.Spacelib.MOD_ID;
 
 public class BlockGen {
     public static RegistryKey<Block> keyOf(Identifier id) {
@@ -29,5 +32,11 @@ public class BlockGen {
         Block block = factory.apply(settings);
         Registry.register(Registries.ITEM, itemKey, new BlockItem(block, new Item.Settings()));
         return Registry.register(Registries.BLOCK, blockKey, block);
+    }
+
+    public static final Block TEST_BLOCK = createBlock(RotatableFourTextureBlock::new ,Identifier.of(MOD_ID, "test_block"), AbstractBlock.Settings.create());
+
+    public static void registerBlocks(){
+
     }
 }
