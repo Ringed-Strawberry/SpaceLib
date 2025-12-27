@@ -86,4 +86,36 @@ public class BlockHitUtil {
                 MathUtil.isInRange((float) BlockHitUtil.getInteractAt(bPos, pos).y, y, pixels) &&
                 MathUtil.isInRange((float) BlockHitUtil.getInteractAt(bPos, pos).z, z, pixels);
     }
+
+    public static byte getSide(BlockPos bPos, Vec3d pos){
+        if(MathUtil.isInRange((float) BlockHitUtil.getInteractAt(bPos, pos).x, 0f, 8)){
+            return 0;
+        }
+        if(MathUtil.isInRange((float) BlockHitUtil.getInteractAt(bPos, pos).y, 0f, 8)){
+            return 1;
+        }
+        if(MathUtil.isInRange((float) BlockHitUtil.getInteractAt(bPos, pos).x, 1f, 8)){
+            return 2;
+        }
+        if(MathUtil.isInRange((float) BlockHitUtil.getInteractAt(bPos, pos).y, 1f, 8)){
+            return 3;
+        }
+        return 0;
+    }
+
+    public static byte getSide(BlockHitResult hit){
+        if(MathUtil.isInRange((float) BlockHitUtil.getInteractAt(hit).x, 0f, 8)){
+            return 0;
+        }
+        if(MathUtil.isInRange((float) BlockHitUtil.getInteractAt(hit).y, 0f, 8)){
+            return 1;
+        }
+        if(MathUtil.isInRange((float) BlockHitUtil.getInteractAt(hit).x, 1f, 8)){
+            return 2;
+        }
+        if(MathUtil.isInRange((float) BlockHitUtil.getInteractAt(hit).y, 1f, 8)){
+            return 3;
+        }
+        return 16;
+    }
 }

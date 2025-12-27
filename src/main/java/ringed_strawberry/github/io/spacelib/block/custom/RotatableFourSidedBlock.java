@@ -3,52 +3,50 @@ package ringed_strawberry.github.io.spacelib.block.custom;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Waterloggable;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
-import net.minecraft.world.WorldView;
-import org.jetbrains.annotations.Nullable;
-import ringed_strawberry.github.io.spacelib.block.BlockGen;
-import ringed_strawberry.github.io.spacelib.block.util.BlockHitUtil;
+import ringed_strawberry.github.io.spacelib.block.properties.util.BlockPropertyUtil;
 
 import java.util.List;
 
 import static net.minecraft.state.property.Properties.WATERLOGGED;
-import static ringed_strawberry.github.io.spacelib.block.properties.SpaceLibBlockProperties.FOUR_TEXTURE_PROPERTY;
+import static ringed_strawberry.github.io.spacelib.block.properties.SpaceLibBlockProperties.*;
 
-public class RotatableFourTextureBlock extends Block implements Waterloggable {
+public class RotatableFourSidedBlock extends Block implements Waterloggable {
     public static final DirectionProperty FACING = Properties.FACING;
-    public RotatableFourTextureBlock(Settings settings) {
+    public RotatableFourSidedBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState()
                 .with(FACING, Direction.NORTH)
-                .with(FOUR_TEXTURE_PROPERTY, 0)
+                .with(UP, true)
+                .with(DOWN, false)
+                .with(LEFT, false)
+                .with(RIGHT, false)
                 .with(WATERLOGGED, false));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED);
-        builder.add(FOUR_TEXTURE_PROPERTY);
+        builder.add(UP);
+        builder.add(DOWN);
+        builder.add(LEFT);
+        builder.add(RIGHT);
         builder.add(FACING);
     }
 
@@ -73,7 +71,7 @@ public class RotatableFourTextureBlock extends Block implements Waterloggable {
 
     @Override
     protected List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
-        int stackSize = state.get(FOUR_TEXTURE_PROPERTY)+1;
+        int stackSize = BlockPropertyUtil.sidesEnabled(state);
         List<ItemStack> stacks = List.of(new ItemStack(this.asItem(), stackSize));
         return stacks;
     }
@@ -81,8 +79,8 @@ public class RotatableFourTextureBlock extends Block implements Waterloggable {
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if(!world.isClient()) {
-            player.sendMessage(Text.of(String.valueOf(BlockHitUtil.getSide(hit))));
             int newTexture = state.get(FOUR_TEXTURE_PROPERTY) + 1;
+            player.sendMessage(Text.of(hit.getSide().asString()));
             if (player.getStackInHand(player.getActiveHand()).getItem() == this.getPickStack(world, pos, state).getItem() && newTexture <= 3) {
                 world.setBlockState(pos, state.with(FOUR_TEXTURE_PROPERTY, newTexture));
                 player.getStackInHand(player.getActiveHand()).decrementUnlessCreative(1, player);
