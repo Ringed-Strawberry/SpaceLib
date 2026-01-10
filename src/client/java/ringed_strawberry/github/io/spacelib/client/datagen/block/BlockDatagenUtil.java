@@ -284,19 +284,19 @@ public class BlockDatagenUtil {
             supplier = supplier.with(
                     When.create().set(POLES, i).set(TOP, true),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                            Identifier.of(MOD_ID, TextureMap.getId(block).getPath() + "_top" + "_" + i)));
+                            Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_top" + "_" + i)));
             supplier = supplier.with(
                     When.create().set(POLES, i).set(BOTTOM, true),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                            Identifier.of(MOD_ID, TextureMap.getId(block).getPath() + "_bottom" + "_" + i)));
+                            Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_bottom" + "_" + i)));
             supplier = supplier.with(
                     When.create().set(POLES, i).set(MIDDLE, true),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                            Identifier.of(MOD_ID, TextureMap.getId(block).getPath() + "_middle" + "_" + i)));
+                            Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_middle" + "_" + i)));
             supplier = supplier.with(
                     When.create().set(POLES, i),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                            Identifier.of(MOD_ID, TextureMap.getId(block).getPath() + "_" + i)));
+                            Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_" + i)));
         }
 
         generator.blockStateCollector.accept(supplier);
