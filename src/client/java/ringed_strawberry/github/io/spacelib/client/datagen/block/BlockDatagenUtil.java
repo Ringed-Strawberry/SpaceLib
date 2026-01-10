@@ -301,7 +301,7 @@ public class BlockDatagenUtil {
                             .put(VariantSettings.X, VariantSettings.Rotation.R90)
             );
             supplier = supplier.with(
-                    When.create().set(POLES, i).set(PillarBlock.AXIS, Direction.Axis.X),
+                    When.create().set(POLES, i).set(PillarBlock.AXIS, Direction.Axis.X).set(MIDDLE, false).set(TOP, false).set(BOTTOM, false),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
                                     Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_" + i))
                             .put(VariantSettings.X, VariantSettings.Rotation.R90)
@@ -325,7 +325,7 @@ public class BlockDatagenUtil {
                                     Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_middle" + "_" + i))
             );
             supplier = supplier.with(
-                    When.create().set(POLES, i).set(PillarBlock.AXIS, Direction.Axis.Y),
+                    When.create().set(POLES, i).set(PillarBlock.AXIS, Direction.Axis.Y).set(MIDDLE, false).set(TOP, false).set(BOTTOM, false),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
                                     Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_" + i))
             );
@@ -351,7 +351,7 @@ public class BlockDatagenUtil {
                             .put(VariantSettings.Y, VariantSettings.Rotation.R90)
             );
             supplier = supplier.with(
-                    When.create().set(POLES, i).set(PillarBlock.AXIS, Direction.Axis.Z),
+                    When.create().set(POLES, i).set(PillarBlock.AXIS, Direction.Axis.Z).set(MIDDLE, false).set(TOP, false).set(BOTTOM, false),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
                                     Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_" + i))
                             .put(VariantSettings.Y, VariantSettings.Rotation.R90)
