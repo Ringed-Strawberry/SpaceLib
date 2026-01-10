@@ -14,7 +14,8 @@ public class SpaceLibModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-        BlockDatagenUtil.createNorthDefaultRotationStatesWith4Textures(blockStateModelGenerator, BlockGen.TEST_BLOCK);
+        BlockDatagenUtil.createNorthDefaultRotationStatesWith4Sides(blockStateModelGenerator, BlockGen.TEST_FOUR_SIDED_BLOCK);
+        BlockDatagenUtil.createPoleBlock(blockStateModelGenerator, BlockGen.TEST_POLE_BLOCK);
     }
 
     @Override

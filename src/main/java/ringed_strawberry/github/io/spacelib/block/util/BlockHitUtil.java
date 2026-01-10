@@ -2,6 +2,7 @@ package ringed_strawberry.github.io.spacelib.block.util;
 
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import ringed_strawberry.github.io.spacelib.math.util.MathUtil;
@@ -19,26 +20,29 @@ public class BlockHitUtil {
         float x = (float) (hit.getPos().getX() + hit.getBlockPos().getX()*-1);
         float y = (float) (hit.getPos().getY() + hit.getBlockPos().getY()*-1);
         float z = (float) (hit.getPos().getZ() + hit.getBlockPos().getZ()*-1);
-        if(z == 0 || z == 1)
-            return new Vec2f(x,y);
-        if(y == 0 || y == 1)
-            return new Vec2f(x,z);
-        if(x == 0 ||x == 1)
-            return new Vec2f(y,z);
-        return new Vec2f(x,y);
+        return switch (hit.getSide()) {
+            case NORTH -> new Vec2f(x, y);
+
+            case SOUTH -> new Vec2f(1.0f - x, y);
+
+            case WEST -> new Vec2f(1.0f - z, y);
+
+            case EAST -> new Vec2f(z, y);
+
+            case UP, DOWN -> new Vec2f(x, z);
+
+        };
     }
 
-    public static Vec2f getVec2fInteractAt(BlockPos bPos, Vec3d pos){
+    public static Vec2f getVec2fInteractAt(BlockPos bPos, Vec3d pos, Direction dir){
         float x = (float) (pos.getX() + bPos.getX()*-1);
         float y = (float) (pos.getY() + bPos.getY()*-1);
         float z = (float) (pos.getZ() + bPos.getZ()*-1);
-        if(z == 0 || z == 1)
-            return new Vec2f(x,y);
-        if(y == 0 || y == 1)
-            return new Vec2f(x,z);
-        if(x == 0 ||x == 1)
-            return new Vec2f(y,z);
-        return new Vec2f(x,y);
+        return switch (dir) {
+            case NORTH, SOUTH -> new Vec2f(x, y);
+            case UP, DOWN -> new Vec2f(x, z);
+            case WEST, EAST -> new Vec2f(z, y);
+        };
     }
 
     public static boolean isInteractionInRange(BlockHitResult hit, float x, float y, float radius){
@@ -46,9 +50,9 @@ public class BlockHitUtil {
                 MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(hit).y, y, radius);
     }
 
-    public static boolean isInteractionInRange(BlockPos bPos, Vec3d pos, float x, float y, float radius){
-        return MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(bPos, pos).x, x, radius) &&
-                MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(bPos, pos).y, y, radius);
+    public static boolean isInteractionInRange(BlockPos bPos, Vec3d pos, Direction dir, float x, float y, float radius){
+        return MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(bPos, pos,dir).x, x, radius) &&
+                MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(bPos, pos,dir).y, y, radius);
     }
 
     public static boolean isInteractionInRange(BlockHitResult hit, float x, float y, int pixels){
@@ -56,9 +60,9 @@ public class BlockHitUtil {
                 MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(hit).y, y, pixels);
     }
 
-    public static boolean isInteractionInRange(BlockPos bPos, Vec3d pos, float x, float y, int pixels){
-        return MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(bPos, pos).x, x, pixels) &&
-                MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(bPos, pos).y, y, pixels);
+    public static boolean isInteractionInRange(BlockPos bPos, Vec3d pos, Direction dir, float x, float y, int pixels){
+        return MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(bPos, pos, dir).x, x, pixels) &&
+                MathUtil.isInRange(BlockHitUtil.getVec2fInteractAt(bPos, pos, dir).y, y, pixels);
     }
 
     //3D
@@ -104,18 +108,26 @@ public class BlockHitUtil {
     }
 
     public static byte getSide(BlockHitResult hit){
-        if(MathUtil.isInRange((float) BlockHitUtil.getInteractAt(hit).x, 0f, 8)){
-            return 0;
+        Vec2f hitPos = getVec2fInteractAt(hit);
+
+        float x = hitPos.x - 0.5f;
+        float y = hitPos.y - 0.5f;
+
+
+        if (Math.abs(x) > Math.abs(y)) {
+
+            if (x > 0) {
+                return 4;
+            } else {
+                return 3;
+            }
+        } else {
+
+            if (y > 0) {
+                return 2;
+            } else {
+                return 1;
+            }
         }
-        if(MathUtil.isInRange((float) BlockHitUtil.getInteractAt(hit).y, 0f, 8)){
-            return 1;
-        }
-        if(MathUtil.isInRange((float) BlockHitUtil.getInteractAt(hit).x, 1f, 8)){
-            return 2;
-        }
-        if(MathUtil.isInRange((float) BlockHitUtil.getInteractAt(hit).y, 1f, 8)){
-            return 3;
-        }
-        return 16;
     }
 }

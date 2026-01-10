@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
@@ -79,12 +80,17 @@ public class RotatableFourSidedBlock extends Block implements Waterloggable {
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if(!world.isClient()) {
-            int newTexture = state.get(FOUR_TEXTURE_PROPERTY) + 1;
-            player.sendMessage(Text.of(hit.getSide().asString()));
-            if (player.getStackInHand(player.getActiveHand()).getItem() == this.getPickStack(world, pos, state).getItem() && newTexture <= 3) {
-                world.setBlockState(pos, state.with(FOUR_TEXTURE_PROPERTY, newTexture));
+            if (player.getStackInHand(player.getActiveHand()).getItem() == this.getPickStack(world, pos, state).getItem() && !BlockPropertyUtil.isSideToggled(state,hit)) {
+                world.setBlockState(pos, BlockPropertyUtil.toggleSide(state, hit));
                 player.getStackInHand(player.getActiveHand()).decrementUnlessCreative(1, player);
                 world.playSound(null, pos, this.soundGroup.getPlaceSound(), SoundCategory.BLOCKS);
+                return ActionResult.success(true);
+            }
+            if (player.getStackInHand(player.getActiveHand()).getItem() == Items.AIR && BlockPropertyUtil.isSideToggled(state,hit)) {
+                world.setBlockState(pos, BlockPropertyUtil.toggleSide(state, hit));
+                if(!player.isCreative())
+                    dropStack(world, pos, this.getPickStack(world, pos, state));
+                world.playSound(null, pos, this.soundGroup.getBreakSound(), SoundCategory.BLOCKS);
                 return ActionResult.success(true);
             }
         }

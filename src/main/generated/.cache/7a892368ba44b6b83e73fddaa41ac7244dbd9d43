@@ -1,3 +1,5 @@
-// 1.21.1	2025-12-27T00:06:13.096789407	SpaceLib/ExampleModModelProvider
-2d9c74c46007db11fbbf91609b4a4b6a681b03c0 assets/spacelib/models/item/test_block.json
-98774ff67084e78f59cc4d4bd049c3d4aa8ca026 assets/spacelib/blockstates/test_block.json
+// 1.21.1	2026-01-10T13:34:21.775239322	SpaceLib/ExampleModModelProvider
+34a8abf6ea8143933093440f9704c3a69c3fc099 assets/spacelib/models/item/test_pole_block.json
+badb6588ee6be8d37ee8ab5681256e1d97f58e3c assets/spacelib/blockstates/test_four_sided_block.json
+7f58b5a28d395f52460fa0d0a1fc8eaa675c3584 assets/spacelib/models/item/test_four_sided_block.json
+9bab67c4f17ea6c5786ca58fb2a4582eca2aa59e assets/spacelib/blockstates/test_pole_block.json

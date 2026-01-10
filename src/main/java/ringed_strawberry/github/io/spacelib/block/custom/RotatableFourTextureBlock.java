@@ -81,7 +81,6 @@ public class RotatableFourTextureBlock extends Block implements Waterloggable {
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if(!world.isClient()) {
-            player.sendMessage(Text.of(String.valueOf(BlockHitUtil.getSide(hit))));
             int newTexture = state.get(FOUR_TEXTURE_PROPERTY) + 1;
             if (player.getStackInHand(player.getActiveHand()).getItem() == this.getPickStack(world, pos, state).getItem() && newTexture <= 3) {
                 world.setBlockState(pos, state.with(FOUR_TEXTURE_PROPERTY, newTexture));
