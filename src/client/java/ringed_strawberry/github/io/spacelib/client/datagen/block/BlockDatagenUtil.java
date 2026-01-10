@@ -2,6 +2,7 @@ package ringed_strawberry.github.io.spacelib.client.datagen.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.PillarBlock;
 import net.minecraft.data.client.*;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
@@ -280,24 +281,83 @@ public class BlockDatagenUtil {
     public static void createPoleBlock(BlockStateModelGenerator generator, Block block){
         generator.registerItemModel(block);
         MultipartBlockStateSupplier supplier = MultipartBlockStateSupplier.create(block);
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i <= 3; i++) {
             supplier = supplier.with(
-                    When.create().set(POLES, i).set(TOP, true),
+                    When.create().set(POLES, i).set(TOP, true).set(PillarBlock.AXIS, Direction.Axis.X),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                            Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_top" + "_" + i)));
+                            Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_top" + "_" + i))
+                            .put(VariantSettings.X, VariantSettings.Rotation.R90)
+            );
             supplier = supplier.with(
-                    When.create().set(POLES, i).set(BOTTOM, true),
+                    When.create().set(POLES, i).set(BOTTOM, true).set(PillarBlock.AXIS, Direction.Axis.X),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                            Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_bottom" + "_" + i)));
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_bottom" + "_" + i))
+                            .put(VariantSettings.X, VariantSettings.Rotation.R90)
+            );
             supplier = supplier.with(
-                    When.create().set(POLES, i).set(MIDDLE, true),
+                    When.create().set(POLES, i).set(MIDDLE, true).set(PillarBlock.AXIS, Direction.Axis.X),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                            Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_middle" + "_" + i)));
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_middle" + "_" + i))
+                            .put(VariantSettings.X, VariantSettings.Rotation.R90)
+            );
             supplier = supplier.with(
-                    When.create().set(POLES, i),
+                    When.create().set(POLES, i).set(PillarBlock.AXIS, Direction.Axis.X),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                            Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_" + i)));
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_" + i))
+                            .put(VariantSettings.X, VariantSettings.Rotation.R90)
+            );
+
+
+
+            supplier = supplier.with(
+                    When.create().set(POLES, i).set(TOP, true).set(PillarBlock.AXIS, Direction.Axis.Y),
+                    BlockStateVariant.create().put(VariantSettings.MODEL,
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_top" + "_" + i))
+            );
+            supplier = supplier.with(
+                    When.create().set(POLES, i).set(BOTTOM, true).set(PillarBlock.AXIS, Direction.Axis.Y),
+                    BlockStateVariant.create().put(VariantSettings.MODEL,
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_bottom" + "_" + i))
+            );
+            supplier = supplier.with(
+                    When.create().set(POLES, i).set(MIDDLE, true).set(PillarBlock.AXIS, Direction.Axis.Y),
+                    BlockStateVariant.create().put(VariantSettings.MODEL,
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_middle" + "_" + i))
+            );
+            supplier = supplier.with(
+                    When.create().set(POLES, i).set(PillarBlock.AXIS, Direction.Axis.Y),
+                    BlockStateVariant.create().put(VariantSettings.MODEL,
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_" + i))
+            );
+
+
+
+            supplier = supplier.with(
+                    When.create().set(POLES, i).set(TOP, true).set(PillarBlock.AXIS, Direction.Axis.Z),
+                    BlockStateVariant.create().put(VariantSettings.MODEL,
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_top" + "_" + i))
+                            .put(VariantSettings.Y, VariantSettings.Rotation.R90)
+            );
+            supplier = supplier.with(
+                    When.create().set(POLES, i).set(BOTTOM, true).set(PillarBlock.AXIS, Direction.Axis.Z),
+                    BlockStateVariant.create().put(VariantSettings.MODEL,
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_bottom" + "_" + i))
+                            .put(VariantSettings.Y, VariantSettings.Rotation.R90)
+            );
+            supplier = supplier.with(
+                    When.create().set(POLES, i).set(MIDDLE, true).set(PillarBlock.AXIS, Direction.Axis.Z),
+                    BlockStateVariant.create().put(VariantSettings.MODEL,
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_middle" + "_" + i))
+                            .put(VariantSettings.Y, VariantSettings.Rotation.R90)
+            );
+            supplier = supplier.with(
+                    When.create().set(POLES, i).set(PillarBlock.AXIS, Direction.Axis.Z),
+                    BlockStateVariant.create().put(VariantSettings.MODEL,
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_" + i))
+                            .put(VariantSettings.Y, VariantSettings.Rotation.R90)
+            );
         }
+
 
         generator.blockStateCollector.accept(supplier);
     }
