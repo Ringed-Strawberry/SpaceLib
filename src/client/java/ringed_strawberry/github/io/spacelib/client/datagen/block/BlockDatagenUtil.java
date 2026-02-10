@@ -226,9 +226,12 @@ public class BlockDatagenUtil {
         MultipartBlockStateSupplier supplier = MultipartBlockStateSupplier.create(block);
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 4; j++) {
-                supplier.with(BlockStateVariant.create().put(VariantSettings.MODEL,
+                supplier.with(When.create().set(Properties.FACING, getDirectionFromInt(i)).set(properties.get(j), true),
+
+                        BlockStateVariant.create().put(VariantSettings.MODEL,
                         Identifier.of(TextureMap.getId(block).getNamespace(),
                         TextureMap.getId(block).getPath() + getDirectionStringFromInt(i)))
+
                         .put(VariantSettings.Y, getSettingFromSide(j)));
             }
         }
