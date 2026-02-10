@@ -1,19 +1,17 @@
 package ringed_strawberry.github.io.spacelib.client.datagen.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.data.client.*;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
 import ringed_strawberry.github.io.spacelib.block.properties.SpaceLibBlockProperties;
 
 import java.util.List;
 
-import static com.ibm.icu.impl.ValidIdentifiers.Datatype.variant;
-import static ringed_strawberry.github.io.spacelib.Spacelib.MOD_ID;
 import static ringed_strawberry.github.io.spacelib.block.custom.PoleBlock.*;
 
 public class BlockDatagenUtil {
@@ -226,37 +224,27 @@ public class BlockDatagenUtil {
     public static void createNorthDefaultRotationStatesWith4Sides(BlockStateModelGenerator generator, Block block) {
         generator.registerItemModel(block);
         MultipartBlockStateSupplier supplier = MultipartBlockStateSupplier.create(block);
-//        for (int i = 0; i <= 15; i++) {
-//            if(0 <= i && i >= 3) {
-//                BlockStateVariant variant = BlockStateVariant.create().put(VariantSettings.X, VariantSettings.Rotation.R90);
-//                When.PropertyCondition when = When.create().set(Properties.FACING, Direction.UP);
-//                for (int j = 0; j <= 3; j++) {
-//                    when.set(properties.get(j), ((i >> j) & 1) == 1);
-//                    if (((i >> j) & 1) == 1) {
-//                        variant.put(VariantSettings.MODEL, Identifier.of(TextureMap.getId(block).getNamespace(),
-//                                TextureMap.getId(block).getPath() + getDirectionFromInt(j)));
-//                    }
-//                }
-//                supplier = supplier.with(when,variant);
-//            }
-//        }
-
-
-//        rotationXYZ = VariantSettings.X;
-//        rotationDegrees = VariantSettings.Rotation.R270;
-//
-//        NORTH_EDGECASE
-//
-//        rotationXYZ = VariantSettings.Y;
-//        rotationDegrees = VariantSettings.Rotation.R180;
-//
-//        rotationXYZ = VariantSettings.Y;
-//        rotationDegrees = VariantSettings.Rotation.R270;
-//
-//        rotationXYZ = VariantSettings.Y;
-//        rotationDegrees = VariantSettings.Rotation.R90;
-//        supplier.with(When.create().set(Properties.FACING, Direction.NORTH), BlockStateVariant.create().put(VariantSettings.MODEL, Identifier.of("a", "a")).put(VariantSettings.MODEL, Identifier.of("a", "a")));
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 4; j++) {
+                supplier.with(BlockStateVariant.create().put(VariantSettings.MODEL,
+                        Identifier.of(TextureMap.getId(block).getNamespace(),
+                        TextureMap.getId(block).getPath() + getDirectionStringFromInt(i)))
+                        .put(VariantSettings.Y, getSettingFromSide(j)));
+            }
+        }
         generator.blockStateCollector.accept(supplier);
+    }
+
+    public static VariantSettings.Rotation getSettingFromSide(int side){
+        if(side == 0)
+            return VariantSettings.Rotation.R90;
+        if(side == 1)
+            return VariantSettings.Rotation.R0;
+        if(side == 2)
+            return VariantSettings.Rotation.R270;
+        if(side == 3)
+            return VariantSettings.Rotation.R180;
+        return VariantSettings.Rotation.R0;
     }
 
 
@@ -266,7 +254,39 @@ public class BlockDatagenUtil {
         return value == 1;
     }
 
-    public static String getDirectionFromInt(int value){
+    public static String getDirectionStringFromInt(int value){
+        if(value == 0)
+            return "_north";
+        if(value == 1)
+            return "_south";
+        if(value == 2)
+            return "_west";
+        if(value == 3)
+            return "_east";
+        if(value == 4)
+            return "_up";
+        if(value == 5)
+            return "_down";
+        return "";
+    }
+
+    public static Direction getDirectionFromInt(int value){
+        if(value == 0)
+            return Direction.NORTH;
+        if(value == 1)
+            return Direction.SOUTH;
+        if(value == 2)
+            return Direction.WEST;
+        if(value == 3)
+            return Direction.EAST;
+        if(value == 4)
+            return Direction.UP;
+        if(value == 5)
+            return Direction.DOWN;
+        return Direction.NORTH;
+    }
+
+    public static String getSideFromInt(int value){
         if(value == 0)
             return "_up";
         if(value == 1)
@@ -278,32 +298,36 @@ public class BlockDatagenUtil {
         return "";
     }
 
-    public static void createPoleBlock(BlockStateModelGenerator generator, Block block){
+    public static void createPoleBlock(BlockStateModelGenerator generator, Block block, @Nullable String extraLocation){
+        if(extraLocation == null){
+            extraLocation = "";
+        }
         generator.registerItemModel(block);
         MultipartBlockStateSupplier supplier = MultipartBlockStateSupplier.create(block);
         for (int i = 0; i <= 3; i++) {
             supplier = supplier.with(
                     When.create().set(POLES, i).set(TOP, true).set(PillarBlock.AXIS, Direction.Axis.X),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                            Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_top" + "_" + i))
-                            .put(VariantSettings.X, VariantSettings.Rotation.R90)
+                            Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + extraLocation + "_top" + "_" + i))
+                            .put(VariantSettings.Y, VariantSettings.Rotation.R90)
             );
             supplier = supplier.with(
                     When.create().set(POLES, i).set(BOTTOM, true).set(PillarBlock.AXIS, Direction.Axis.X),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_bottom" + "_" + i))
-                            .put(VariantSettings.X, VariantSettings.Rotation.R90)
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + extraLocation + "_bottom" + "_" + i))
+                            .put(VariantSettings.Y, VariantSettings.Rotation.R90)
             );
             supplier = supplier.with(
                     When.create().set(POLES, i).set(MIDDLE, true).set(PillarBlock.AXIS, Direction.Axis.X),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_middle" + "_" + i))
-                            .put(VariantSettings.X, VariantSettings.Rotation.R90)
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + extraLocation + "_middle" + "_" + i))
+                            .put(VariantSettings.Y, VariantSettings.Rotation.R90)
             );
             supplier = supplier.with(
                     When.create().set(POLES, i).set(PillarBlock.AXIS, Direction.Axis.X).set(MIDDLE, false).set(TOP, false).set(BOTTOM, false),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_" + i))
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + extraLocation + "_" + i))
+                            .put(VariantSettings.Y, VariantSettings.Rotation.R90)
                             .put(VariantSettings.X, VariantSettings.Rotation.R90)
             );
 
@@ -312,22 +336,22 @@ public class BlockDatagenUtil {
             supplier = supplier.with(
                     When.create().set(POLES, i).set(TOP, true).set(PillarBlock.AXIS, Direction.Axis.Y),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_top" + "_" + i))
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + extraLocation + "_top" + "_" + i))
             );
             supplier = supplier.with(
                     When.create().set(POLES, i).set(BOTTOM, true).set(PillarBlock.AXIS, Direction.Axis.Y),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_bottom" + "_" + i))
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + extraLocation + "_bottom" + "_" + i))
             );
             supplier = supplier.with(
                     When.create().set(POLES, i).set(MIDDLE, true).set(PillarBlock.AXIS, Direction.Axis.Y),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_middle" + "_" + i))
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + extraLocation + "_middle" + "_" + i))
             );
             supplier = supplier.with(
                     When.create().set(POLES, i).set(PillarBlock.AXIS, Direction.Axis.Y).set(MIDDLE, false).set(TOP, false).set(BOTTOM, false),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_" + i))
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + extraLocation + "_" + i))
             );
 
 
@@ -335,26 +359,30 @@ public class BlockDatagenUtil {
             supplier = supplier.with(
                     When.create().set(POLES, i).set(TOP, true).set(PillarBlock.AXIS, Direction.Axis.Z),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_top" + "_" + i))
-                            .put(VariantSettings.Y, VariantSettings.Rotation.R90)
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + extraLocation + "_top" + "_" + i))
+                            .put(VariantSettings.Y, VariantSettings.Rotation.R270)
+                            .put(VariantSettings.X, VariantSettings.Rotation.R90)
             );
             supplier = supplier.with(
                     When.create().set(POLES, i).set(BOTTOM, true).set(PillarBlock.AXIS, Direction.Axis.Z),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_bottom" + "_" + i))
-                            .put(VariantSettings.Y, VariantSettings.Rotation.R90)
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + extraLocation + "_bottom" + "_" + i))
+                            .put(VariantSettings.Y, VariantSettings.Rotation.R270)
+                            .put(VariantSettings.X, VariantSettings.Rotation.R90)
             );
             supplier = supplier.with(
                     When.create().set(POLES, i).set(MIDDLE, true).set(PillarBlock.AXIS, Direction.Axis.Z),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_middle" + "_" + i))
-                            .put(VariantSettings.Y, VariantSettings.Rotation.R90)
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + extraLocation + "_middle" + "_" + i))
+                            .put(VariantSettings.Y, VariantSettings.Rotation.R270)
+                            .put(VariantSettings.X, VariantSettings.Rotation.R90)
             );
             supplier = supplier.with(
                     When.create().set(POLES, i).set(PillarBlock.AXIS, Direction.Axis.Z).set(MIDDLE, false).set(TOP, false).set(BOTTOM, false),
                     BlockStateVariant.create().put(VariantSettings.MODEL,
-                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + "_" + i))
-                            .put(VariantSettings.Y, VariantSettings.Rotation.R90)
+                                    Identifier.of(TextureMap.getId(block).getNamespace(), TextureMap.getId(block).getPath() + extraLocation + "_" + i))
+                            .put(VariantSettings.Y, VariantSettings.Rotation.R270)
+                            .put(VariantSettings.X, VariantSettings.Rotation.R90)
             );
         }
 
