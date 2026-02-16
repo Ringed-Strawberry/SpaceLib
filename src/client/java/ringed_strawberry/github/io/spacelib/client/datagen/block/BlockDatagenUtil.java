@@ -232,16 +232,20 @@ public class BlockDatagenUtil {
                 if(i == 2 || i == 3)
                     rotation = VariantSettings.X;
                 if(i == 0 || i == 1){
-                        supplier.with(When.create().set(Properties.FACING, getDirectionFromInt(i)).set(properties.get(j), true),
-
+                    String rotated = "";
+                    if(j == 0 || j == 2){
+                        rotated =  "_rotated";
+                    }
+                        supplier.with(When.create().set(
+                                Properties.FACING, getDirectionFromInt(i)).set(properties.get(j), true),
                                 BlockStateVariant.create().put(VariantSettings.MODEL,
                                                 Identifier.of(TextureMap.getId(block).getNamespace(),
-                                                        TextureMap.getId(block).getPath() + getDirectionStringFromInt(i) + "_rotated"))
+                                                        TextureMap.getId(block).getPath() + getDirectionStringFromInt(i) + rotated))
 
                                         .put(rotation, getSettingFromSideRotated(j)));
                 } else {
-                    supplier.with(When.create().set(Properties.FACING, getDirectionFromInt(i)).set(properties.get(j), true),
-
+                    supplier.with(When.create().set(
+                            Properties.FACING, getDirectionFromInt(i)).set(properties.get(j), true),
                             BlockStateVariant.create().put(VariantSettings.MODEL,
                                             Identifier.of(TextureMap.getId(block).getNamespace(),
                                                     TextureMap.getId(block).getPath() + getDirectionStringFromInt(i)))
