@@ -227,11 +227,11 @@ public class BlockDatagenUtil {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 4; j++) {
                 VariantSetting<VariantSettings.Rotation> rotation = VariantSettings.X;
-                if(i == 5 || i == 6 || i == 1 || i == 2)
+                if(i == 4 || i == 5 || i == 0 || i == 1)
                     rotation = VariantSettings.Y;
-                if(i == 3 || i == 4)
+                if(i == 2 || i == 3)
                     rotation = VariantSettings.X;
-                if(i == 1 || i == 2){
+                if(i == 0 || i == 1){
                         supplier.with(When.create().set(Properties.FACING, getDirectionFromInt(i)).set(properties.get(j), true),
 
                                 BlockStateVariant.create().put(VariantSettings.MODEL,
@@ -254,13 +254,9 @@ public class BlockDatagenUtil {
     }
 
     private static VariantSettings.Rotation getSettingFromSideRotated(int side) {
-        if(side == 0)
+        if(side == 0 || side == 2)
             return VariantSettings.Rotation.R0;
-        if(side == 1)
-            return VariantSettings.Rotation.R180;
-        if(side == 2)
-            return VariantSettings.Rotation.R0;
-        if(side == 3)
+        if(side == 1 || side == 3)
             return VariantSettings.Rotation.R180;
         return VariantSettings.Rotation.R0;
     }
