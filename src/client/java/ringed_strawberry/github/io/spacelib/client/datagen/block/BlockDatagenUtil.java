@@ -226,16 +226,43 @@ public class BlockDatagenUtil {
         MultipartBlockStateSupplier supplier = MultipartBlockStateSupplier.create(block);
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 4; j++) {
-                supplier.with(When.create().set(Properties.FACING, getDirectionFromInt(i)).set(properties.get(j), true),
+                VariantSetting<VariantSettings.Rotation> rotation = VariantSettings.X;
+                if(i == 5 || i == 6 || i == 1 || i == 2)
+                    rotation = VariantSettings.Y;
+                if(i == 3 || i == 4)
+                    rotation = VariantSettings.X;
+                if(i == 1 || i == 2){
+                        supplier.with(When.create().set(Properties.FACING, getDirectionFromInt(i)).set(properties.get(j), true),
 
-                        BlockStateVariant.create().put(VariantSettings.MODEL,
-                        Identifier.of(TextureMap.getId(block).getNamespace(),
-                        TextureMap.getId(block).getPath() + getDirectionStringFromInt(i)))
+                                BlockStateVariant.create().put(VariantSettings.MODEL,
+                                                Identifier.of(TextureMap.getId(block).getNamespace(),
+                                                        TextureMap.getId(block).getPath() + getDirectionStringFromInt(i) + "_rotated"))
 
-                        .put(VariantSettings.Y, getSettingFromSide(j)));
+                                        .put(rotation, getSettingFromSideRotated(j)));
+                } else {
+                    supplier.with(When.create().set(Properties.FACING, getDirectionFromInt(i)).set(properties.get(j), true),
+
+                            BlockStateVariant.create().put(VariantSettings.MODEL,
+                                            Identifier.of(TextureMap.getId(block).getNamespace(),
+                                                    TextureMap.getId(block).getPath() + getDirectionStringFromInt(i)))
+
+                                    .put(rotation, getSettingFromSide(j)));
+                }
             }
         }
         generator.blockStateCollector.accept(supplier);
+    }
+
+    private static VariantSettings.Rotation getSettingFromSideRotated(int side) {
+        if(side == 0)
+            return VariantSettings.Rotation.R0;
+        if(side == 1)
+            return VariantSettings.Rotation.R180;
+        if(side == 2)
+            return VariantSettings.Rotation.R0;
+        if(side == 3)
+            return VariantSettings.Rotation.R180;
+        return VariantSettings.Rotation.R0;
     }
 
     public static VariantSettings.Rotation getSettingFromSide(int side){
