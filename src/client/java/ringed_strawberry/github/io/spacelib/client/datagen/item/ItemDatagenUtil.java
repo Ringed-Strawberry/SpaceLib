@@ -7,6 +7,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.Optional;
 
+
 public class ItemDatagenUtil {
     public static final TextureKey LAYER3 = of("layer3");
     public static final TextureKey LAYER4 = of("layer4");

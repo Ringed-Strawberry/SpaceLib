@@ -4,8 +4,10 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.client.ItemModelGenerator;
+import net.minecraft.data.client.Models;
 import ringed_strawberry.github.io.spacelib.block.BlockGen;
 import ringed_strawberry.github.io.spacelib.client.datagen.block.BlockDatagenUtil;
+import ringed_strawberry.github.io.spacelib.item.ItemGen;
 
 public class SpaceLibModelProvider extends FabricModelProvider {
     public SpaceLibModelProvider(FabricDataOutput output) {
@@ -20,6 +22,7 @@ public class SpaceLibModelProvider extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
+        itemModelGenerator.register(ItemGen.test, Models.GENERATED);
 
     }
 
