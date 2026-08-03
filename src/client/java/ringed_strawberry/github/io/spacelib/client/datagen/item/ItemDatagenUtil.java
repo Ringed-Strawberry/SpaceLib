@@ -6,14 +6,15 @@ import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 
 import java.util.Optional;
 
 public class ItemDatagenUtil {
     public static void registerWithFourTints(ItemModelGenerators itemModelGenerator, Item item, ItemTintSource tint, ItemTintSource tint1, ItemTintSource tint2, ItemTintSource tint3){
-        ResourceLocation identifier = uploadFourLayers(item, TextureMapping.getItemTexture(item),
+        Identifier identifier = uploadFourLayers(item, TextureMapping.getItemTexture(item),
                 TextureMapping.getItemTexture(item, "_tinted1"),
                 TextureMapping.getItemTexture(item, "_tinted2"),
                 TextureMapping.getItemTexture(item, "_tinted3"),
@@ -22,7 +23,7 @@ public class ItemDatagenUtil {
     }
 
     public static void registerWithFiveTints(ItemModelGenerators itemModelGenerator, Item item, ItemTintSource tint, ItemTintSource tint1, ItemTintSource tint2, ItemTintSource tint3, ItemTintSource tint4){
-        ResourceLocation identifier = uploadFiveLayers(item, TextureMapping.getItemTexture(item),
+        Identifier identifier = uploadFiveLayers(item, TextureMapping.getItemTexture(item),
                 TextureMapping.getItemTexture(item, "_tinted1"),
                 TextureMapping.getItemTexture(item, "_tinted2"),
                 TextureMapping.getItemTexture(item, "_tinted3"),
@@ -31,11 +32,11 @@ public class ItemDatagenUtil {
         itemModelGenerator.itemModelOutput.accept(item, ItemModelUtils.tintedModel(identifier, tint,tint1,tint2,tint3,tint4));
     }
 
-    public static ResourceLocation uploadFourLayers(Item item, ResourceLocation layer0, ResourceLocation layer1, ResourceLocation layer2, ResourceLocation layer3, ItemModelGenerators itemModelGenerator) {
+    public static Identifier uploadFourLayers(Item item, Material layer0, Material layer1, Material layer2, Material layer3, ItemModelGenerators itemModelGenerator) {
         return GENERATED_FOUR_LAYERS.create(item, layered4(layer0, layer1, layer2, layer3), itemModelGenerator.modelOutput);
     }
 
-    public static ResourceLocation uploadFiveLayers(Item item, ResourceLocation layer0, ResourceLocation layer1, ResourceLocation layer2, ResourceLocation layer3, ResourceLocation layer4, ItemModelGenerators itemModelGenerator) {
+    public static Identifier uploadFiveLayers(Item item, Material layer0, Material layer1, Material layer2, Material layer3, Material layer4, ItemModelGenerators itemModelGenerator) {
         return GENERATED_FIVE_LAYERS.create(item, layered5(layer0, layer1, layer2, layer3, layer4), itemModelGenerator.modelOutput);
     }
     public static final TextureSlot LAYER3 = of("layer3");
@@ -48,14 +49,14 @@ public class ItemDatagenUtil {
     }
 
     private static ModelTemplate item(String parent, TextureSlot... requiredTextureSlots) {
-        return new ModelTemplate(Optional.of(ResourceLocation.withDefaultNamespace("item/" + parent)), Optional.empty(), requiredTextureSlots);
+        return new ModelTemplate(Optional.of(Identifier.withDefaultNamespace("item/" + parent)), Optional.empty(), requiredTextureSlots);
     }
 
-    public static TextureMapping layered4(ResourceLocation layer0, ResourceLocation layer1, ResourceLocation layer2, ResourceLocation layer3) {
+    public static TextureMapping layered4(Material layer0, Material layer1, Material layer2, Material layer3) {
         return (new TextureMapping()).put(TextureSlot.LAYER0, layer0).put(TextureSlot.LAYER1, layer1).put(TextureSlot.LAYER2, layer2).put(LAYER3, layer3);
     }
 
-    public static TextureMapping layered5(ResourceLocation layer0, ResourceLocation layer1, ResourceLocation layer2, ResourceLocation layer3, ResourceLocation layer4) {
+    public static TextureMapping layered5(Material layer0, Material layer1, Material layer2, Material layer3, Material layer4) {
         return (new TextureMapping()).put(TextureSlot.LAYER0, layer0).put(TextureSlot.LAYER1, layer1).put(TextureSlot.LAYER2, layer2).put(LAYER3, layer3).put(LAYER4, layer4);
     }
 }

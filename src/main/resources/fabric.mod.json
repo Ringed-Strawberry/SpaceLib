@@ -3,11 +3,13 @@
   "id": "spacelib",
   "version": "${version}",
   "name": "SpaceLib",
-  "description": "Adds customizable Tool & Equipment, tailored by each player, for each player!",
-  "authors": [],
+  "description": "A library mod for Saturn's Rings' mods",
+  "authors": [
+    "Saturn's Rings"
+  ],
   "contact": {},
   "license": "MIT",
-  "accessWidener" : "spacelib.accesswidener",
+  "accessWidener" : "spacelib.classtweaker",
   "icon": "assets/spacelib/icon.png",
   "environment": "*",
   "entrypoints": {
@@ -30,7 +32,8 @@
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",
-    "fabric": "*",
+    "fabric-api": "*",
+    "java": ">=25",
     "minecraft": "${minecraft_version}"
   }
 }
