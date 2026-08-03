@@ -1,57 +1,61 @@
 package ringed_strawberry.github.io.spacelib.client.datagen.item;
 
-import net.minecraft.client.data.*;
-import net.minecraft.client.render.item.tint.TintSource;
-import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.color.item.ItemTintSource;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.model.ItemModelUtils;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 
 import java.util.Optional;
 
 public class ItemDatagenUtil {
-    public static void registerWithFourTints(ItemModelGenerator itemModelGenerator, Item item, TintSource tint, TintSource tint1, TintSource tint2, TintSource tint3){
-        Identifier identifier = uploadFourLayers(item, TextureMap.getId(item),
-                TextureMap.getSubId(item, "_tinted1"),
-                TextureMap.getSubId(item, "_tinted2"),
-                TextureMap.getSubId(item, "_tinted3"),
+    public static void registerWithFourTints(ItemModelGenerators itemModelGenerator, Item item, ItemTintSource tint, ItemTintSource tint1, ItemTintSource tint2, ItemTintSource tint3){
+        ResourceLocation identifier = uploadFourLayers(item, TextureMapping.getItemTexture(item),
+                TextureMapping.getItemTexture(item, "_tinted1"),
+                TextureMapping.getItemTexture(item, "_tinted2"),
+                TextureMapping.getItemTexture(item, "_tinted3"),
                 itemModelGenerator);
-        itemModelGenerator.output.accept(item, ItemModels.tinted(identifier, new TintSource[]{tint,tint1,tint2,tint3}));
+        itemModelGenerator.itemModelOutput.accept(item, ItemModelUtils.tintedModel(identifier, tint, tint1, tint2, tint3));
     }
 
-    public static void registerWithFiveTints(ItemModelGenerator itemModelGenerator, Item item, TintSource tint, TintSource tint1, TintSource tint2, TintSource tint3, TintSource tint4){
-        Identifier identifier = uploadFiveLayers(item, TextureMap.getId(item),
-                TextureMap.getSubId(item, "_tinted1"),
-                TextureMap.getSubId(item, "_tinted2"),
-                TextureMap.getSubId(item, "_tinted3"),
-                TextureMap.getSubId(item, "_tinted4"),
+    public static void registerWithFiveTints(ItemModelGenerators itemModelGenerator, Item item, ItemTintSource tint, ItemTintSource tint1, ItemTintSource tint2, ItemTintSource tint3, ItemTintSource tint4){
+        ResourceLocation identifier = uploadFiveLayers(item, TextureMapping.getItemTexture(item),
+                TextureMapping.getItemTexture(item, "_tinted1"),
+                TextureMapping.getItemTexture(item, "_tinted2"),
+                TextureMapping.getItemTexture(item, "_tinted3"),
+                TextureMapping.getItemTexture(item, "_tinted4"),
                 itemModelGenerator);
-        itemModelGenerator.output.accept(item, ItemModels.tinted(identifier, new TintSource[]{tint,tint1,tint2,tint3,tint4}));
+        itemModelGenerator.itemModelOutput.accept(item, ItemModelUtils.tintedModel(identifier, tint,tint1,tint2,tint3,tint4));
     }
 
-    public static Identifier uploadFourLayers(Item item, Identifier layer0, Identifier layer1, Identifier layer2, Identifier layer3, ItemModelGenerator itemModelGenerator) {
-        return GENERATED_FOUR_LAYERS.upload(item, layered4(layer0, layer1, layer2, layer3), itemModelGenerator.modelCollector);
+    public static ResourceLocation uploadFourLayers(Item item, ResourceLocation layer0, ResourceLocation layer1, ResourceLocation layer2, ResourceLocation layer3, ItemModelGenerators itemModelGenerator) {
+        return GENERATED_FOUR_LAYERS.create(item, layered4(layer0, layer1, layer2, layer3), itemModelGenerator.modelOutput);
     }
 
-    public static Identifier uploadFiveLayers(Item item, Identifier layer0, Identifier layer1, Identifier layer2, Identifier layer3, Identifier layer4, ItemModelGenerator itemModelGenerator) {
-        return GENERATED_FIVE_LAYERS.upload(item, layered5(layer0, layer1, layer2, layer3, layer4), itemModelGenerator.modelCollector);
+    public static ResourceLocation uploadFiveLayers(Item item, ResourceLocation layer0, ResourceLocation layer1, ResourceLocation layer2, ResourceLocation layer3, ResourceLocation layer4, ItemModelGenerators itemModelGenerator) {
+        return GENERATED_FIVE_LAYERS.create(item, layered5(layer0, layer1, layer2, layer3, layer4), itemModelGenerator.modelOutput);
     }
-    public static final TextureKey LAYER3 = of("layer3");
-    public static final TextureKey LAYER4 = of("layer4");
-    public static final Model GENERATED_FOUR_LAYERS = item("generated", TextureKey.LAYER0, TextureKey.LAYER1, TextureKey.LAYER2, LAYER3);
-    public static final Model GENERATED_FIVE_LAYERS = item("generated", TextureKey.LAYER0, TextureKey.LAYER1, TextureKey.LAYER2, LAYER3, LAYER4);
+    public static final TextureSlot LAYER3 = of("layer3");
+    public static final TextureSlot LAYER4 = of("layer4");
+    public static final ModelTemplate GENERATED_FOUR_LAYERS = item("generated", TextureSlot.LAYER0, TextureSlot.LAYER1, TextureSlot.LAYER2, LAYER3);
+    public static final ModelTemplate GENERATED_FIVE_LAYERS = item("generated", TextureSlot.LAYER0, TextureSlot.LAYER1, TextureSlot.LAYER2, LAYER3, LAYER4);
 
-    public static TextureKey of(String name) {
-        return new TextureKey(name, null);
-    }
-
-    private static Model item(String parent, TextureKey... requiredTextureKeys) {
-        return new Model(Optional.of(Identifier.ofVanilla("item/" + parent)), Optional.empty(), requiredTextureKeys);
+    public static TextureSlot of(String name) {
+        return TextureSlot.create(name, null);
     }
 
-    public static TextureMap layered4(Identifier layer0, Identifier layer1, Identifier layer2, Identifier layer3) {
-        return (new TextureMap()).put(TextureKey.LAYER0, layer0).put(TextureKey.LAYER1, layer1).put(TextureKey.LAYER2, layer2).put(LAYER3, layer3);
+    private static ModelTemplate item(String parent, TextureSlot... requiredTextureSlots) {
+        return new ModelTemplate(Optional.of(ResourceLocation.withDefaultNamespace("item/" + parent)), Optional.empty(), requiredTextureSlots);
     }
 
-    public static TextureMap layered5(Identifier layer0, Identifier layer1, Identifier layer2, Identifier layer3, Identifier layer4) {
-        return (new TextureMap()).put(TextureKey.LAYER0, layer0).put(TextureKey.LAYER1, layer1).put(TextureKey.LAYER2, layer2).put(LAYER3, layer3).put(LAYER4, layer4);
+    public static TextureMapping layered4(ResourceLocation layer0, ResourceLocation layer1, ResourceLocation layer2, ResourceLocation layer3) {
+        return (new TextureMapping()).put(TextureSlot.LAYER0, layer0).put(TextureSlot.LAYER1, layer1).put(TextureSlot.LAYER2, layer2).put(LAYER3, layer3);
+    }
+
+    public static TextureMapping layered5(ResourceLocation layer0, ResourceLocation layer1, ResourceLocation layer2, ResourceLocation layer3, ResourceLocation layer4) {
+        return (new TextureMapping()).put(TextureSlot.LAYER0, layer0).put(TextureSlot.LAYER1, layer1).put(TextureSlot.LAYER2, layer2).put(LAYER3, layer3).put(LAYER4, layer4);
     }
 }
