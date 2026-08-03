@@ -8,9 +8,6 @@ group = 'com.github.Ringed-Strawberry'
 version = project.mod_version
 group = project.maven_group
 
-sourceCompatibility = 1.21
-targetCompatibility = 1.21
-
 base {
     archivesName = project.archives_base_name
 }
