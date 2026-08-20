@@ -12,10 +12,7 @@ import net.minecraft.util.Identifier;
 import java.util.List;
 import java.util.function.Function;
 
-import static ringed_strawberry.github.io.spacelib.Spacelib.MOD_ID;
-
 public class ItemGen {
-    public static final Item test = ItemGen.createItem(Identifier.of(MOD_ID, "test"), Item::new, new Item.Settings());
 
     public static Item createItem(Identifier id, Function<Item.Settings, Item> factory, Item.Settings settings) {
         return register(keyOf(id), factory, settings);
@@ -29,8 +26,8 @@ public class ItemGen {
                         .formatted(ItemStatics.SMITHING_TEMPLATE_DESCRIPTION_FORMATTING),
                 Text.translatable(id.getNamespace() + ":" + translationID),
                 Text.translatable(id.getNamespace() + ":smithing_template." + translationID + ".base_slot_description"),
-                Text.translatable(id.getNamespace() + ":smithing_template." + translationID + ".additions_slot_description"),
-                emptyBaseSlotTextures, emptyAdditionsSlotTextures
+                emptyBaseSlotTextures, emptyAdditionsSlotTextures,
+                new Item.Settings()
         );
         return Registry.register(Registries.ITEM, keyOf(id), item);
     }
@@ -43,18 +40,16 @@ public class ItemGen {
                         .formatted(ItemStatics.SMITHING_TEMPLATE_DESCRIPTION_FORMATTING),
                 Text.translatable(id.getNamespace() + ":" + translationID),
                 Text.translatable(id.getNamespace() + ":smithing_template." + translationID + ".base_slot_description"),
-                Text.translatable(id.getNamespace() + ":smithing_template." + translationID + ".additions_slot_description"),
-                ItemStatics.getDefaultUpgradeEmptyBaseSlotTextures(), ItemStatics.getDefaultUpgradeEmptyBaseSlotTextures()
+                ItemStatics.getDefaultUpgradeEmptyBaseSlotTextures(), ItemStatics.getDefaultUpgradeEmptyBaseSlotTextures(), new Item.Settings()
         );
         return Registry.register(Registries.ITEM, keyOf(id), item);
     }
 
     public static Item register(RegistryKey<Item> key, Function<Item.Settings, Item> factory, Item.Settings settings) {
-        Item item = factory.apply(settings);
-        return Registry.register(Registries.ITEM, key, item);
+        return Registry.register(Registries.ITEM, key, factory.apply(settings.registryKey(key)));
     }
 
-    private static RegistryKey<Item> keyOf(Identifier id) {
+    public static RegistryKey<Item> keyOf(Identifier id) {
         return RegistryKey.of(RegistryKeys.ITEM, id);
     }
 

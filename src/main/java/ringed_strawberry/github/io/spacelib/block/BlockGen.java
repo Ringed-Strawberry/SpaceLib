@@ -11,7 +11,6 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import ringed_strawberry.github.io.spacelib.block.custom.PoleBlock;
 import ringed_strawberry.github.io.spacelib.block.custom.RotatableFourSidedBlock;
-import ringed_strawberry.github.io.spacelib.block.custom.RotatableFourTextureBlock;
 
 import java.util.function.Function;
 
@@ -31,9 +30,10 @@ public class BlockGen {
     }
 
     public static Block register(RegistryKey<Block> blockKey, RegistryKey<Item> itemKey, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
-        Block block = factory.apply(settings);
-        Registry.register(Registries.ITEM, itemKey, new BlockItem(block, new Item.Settings()));
-        return Registry.register(Registries.BLOCK, blockKey, block);
+        Block block = factory.apply(settings.registryKey(blockKey));
+        Block registered = Registry.register(Registries.BLOCK, blockKey, block);
+        Registry.register(Registries.ITEM, itemKey, new BlockItem(block, new Item.Settings().registryKey(itemKey)));
+        return registered;
     }
 
     public static final Block TEST_FOUR_SIDED_BLOCK =

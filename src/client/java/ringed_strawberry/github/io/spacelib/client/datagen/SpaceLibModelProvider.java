@@ -1,13 +1,9 @@
 package ringed_strawberry.github.io.spacelib.client.datagen;
 
+import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
-import net.minecraft.data.client.BlockStateModelGenerator;
-import net.minecraft.data.client.ItemModelGenerator;
-import net.minecraft.data.client.Models;
-import ringed_strawberry.github.io.spacelib.block.BlockGen;
-import ringed_strawberry.github.io.spacelib.client.datagen.block.BlockDatagenUtil;
-import ringed_strawberry.github.io.spacelib.item.ItemGen;
+import net.minecraft.client.data.BlockStateModelGenerator;
+import net.minecraft.client.data.ItemModelGenerator;
 
 public class SpaceLibModelProvider extends FabricModelProvider {
     public SpaceLibModelProvider(FabricDataOutput output) {
@@ -16,16 +12,13 @@ public class SpaceLibModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-        BlockDatagenUtil.createNorthDefaultRotationStatesWith4Sides(blockStateModelGenerator, BlockGen.TEST_FOUR_SIDED_BLOCK);
-        BlockDatagenUtil.createPoleBlock(blockStateModelGenerator, BlockGen.TEST_POLE_BLOCK, "");
+//        BlockDatagenUtil.createNorthDefaultRotationStatesWith4Sides(blockStateModelGenerator, BlockGen.TEST_FOUR_SIDED_BLOCK);
+//        BlockDatagenUtil.createPoleBlock(blockStateModelGenerator, BlockGen.TEST_POLE_BLOCK, "");
     }
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        itemModelGenerator.register(ItemGen.test, Models.GENERATED);
-
     }
-
     @Override
     public String getName() {
         return "ExampleModModelProvider";

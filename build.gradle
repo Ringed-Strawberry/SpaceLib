@@ -1,15 +1,10 @@
 plugins {
-    id 'fabric-loom' version '1.11-SNAPSHOT'
+    id 'fabric-loom' version '1.17-SNAPSHOT'
     id 'maven-publish'
 }
 
-group = 'com.github.Ringed-Strawberry'
-
 version = project.mod_version
 group = project.maven_group
-
-sourceCompatibility = 1.21
-targetCompatibility = 1.21
 
 base {
     archivesName = project.archives_base_name
@@ -17,7 +12,7 @@ base {
 
 loom {
     splitEnvironmentSourceSets()
-    accessWidenerPath = file("src/main/resources/spacelib.accesswidener")
+
     mods {
         "spacelib" {
             sourceSet sourceSets.main
@@ -33,6 +28,11 @@ fabricApi {
 }
 
 repositories {
+    // Add repositories to retrieve artifacts from in here.
+    // You should only use this when depending on other mods because
+    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+    // for more information about repositories.
 }
 
 dependencies {
@@ -41,7 +41,7 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 }
 
 processResources {
@@ -82,7 +82,7 @@ java {
 
 jar {
     from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
+        rename { "${it}_${project.archives_base_name}" }
     }
 }
 

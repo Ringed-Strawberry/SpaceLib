@@ -6,7 +6,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldView;
 import ringed_strawberry.github.io.spacelib.block.util.BlockHitUtil;
 
 import static net.minecraft.block.PillarBlock.AXIS;
@@ -69,15 +69,15 @@ public class BlockPropertyUtil {
         };
     }
 
-    public static BlockState getPoleState(WorldAccess world, BlockPos pos, Block block){
+    public static BlockState getPoleState(WorldView world, BlockPos pos, Block block){
         return getPoleState(world, pos, block, world.getBlockState(pos));
     }
 
-    public static BlockState getPoleState(WorldAccess world, BlockPos pos, Block block, Direction dir){
+    public static BlockState getPoleState(WorldView world, BlockPos pos, Block block, Direction dir){
         return getPoleState(world, pos, block, block.getDefaultState().with(AXIS, dir.getAxis()));
     }
 
-    public static BlockState getPoleState(WorldAccess world, BlockPos pos, Block block, BlockState startingState){
+    public static BlockState getPoleState(WorldView world, BlockPos pos, Block block, BlockState startingState){
         BlockState returnalState = startingState;
         Direction.Axis axis = startingState.get(AXIS);
         if(axis.isVertical()) {

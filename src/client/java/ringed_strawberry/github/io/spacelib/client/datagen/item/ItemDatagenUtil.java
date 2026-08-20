@@ -1,8 +1,9 @@
 package ringed_strawberry.github.io.spacelib.client.datagen.item;
 
-import net.minecraft.data.client.Model;
-import net.minecraft.data.client.TextureKey;
-import net.minecraft.data.client.TextureMap;
+import net.minecraft.client.data.Model;
+import net.minecraft.client.data.TextureKey;
+import net.minecraft.client.data.TextureMap;
+
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
