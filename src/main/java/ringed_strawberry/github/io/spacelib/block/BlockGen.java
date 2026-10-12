@@ -9,12 +9,10 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
-import ringed_strawberry.github.io.spacelib.block.custom.PoleBlock;
-import ringed_strawberry.github.io.spacelib.block.custom.RotatableFourSidedBlock;
+import ringed_strawberry.github.io.spacelib.block.custom.AirPlaceableBlock;
+import ringed_strawberry.github.io.spacelib.item.custom.AirPlaceableBlockItem;
 
 import java.util.function.Function;
-
-import static ringed_strawberry.github.io.spacelib.Spacelib.MOD_ID;
 
 public class BlockGen {
     public static RegistryKey<Block> keyOf(Identifier id) {
@@ -36,15 +34,33 @@ public class BlockGen {
         return registered;
     }
 
-    public static final Block TEST_FOUR_SIDED_BLOCK =
-            createBlock(RotatableFourSidedBlock::new ,
-                    Identifier.of(MOD_ID, "test_four_sided_block"),
-                    AbstractBlock.Settings.create());
+    public static Block createBlockWithExtras(Block block, Identifier id) {
+        return registerBlockWithExtras(keyOf(id), itemKeyOf(id), block);
+    }
 
-    public static final Block TEST_POLE_BLOCK =
-            createBlock(PoleBlock::new,
-                    Identifier.of(MOD_ID, "test_pole_block"),
-                    AbstractBlock.Settings.create());
+    public static Block registerBlockWithExtras(RegistryKey<Block> blockKey, RegistryKey<Item> itemKey, Block block) {
+        Registry.register(Registries.ITEM, itemKey, new BlockItem(block, new Item.Settings()));
+        return Registry.register(Registries.BLOCK, blockKey, block);
+    }
+
+    public static Block createAirPlaceableBlock(Identifier id, AbstractBlock.Settings settings) {
+        return registerAirPlaceableBlock(AirPlaceableBlock::new, keyOf(id), itemKeyOf(id), settings);
+    }
+
+    public static Block createAirPlaceableBlockWithExtras(Identifier id, AirPlaceableBlock block) {
+        return registerAirPlaceableBlockWithExtras(keyOf(id), itemKeyOf(id), block);
+    }
+
+    public static Block registerAirPlaceableBlock(Function<AbstractBlock.Settings, AirPlaceableBlock> factory,RegistryKey<Block> blockKey, RegistryKey<Item> itemKey, AbstractBlock.Settings settings) {
+        Block block = factory.apply(settings);
+        Registry.register(Registries.ITEM, itemKey, new AirPlaceableBlockItem(block, new Item.Settings()));
+        return Registry.register(Registries.BLOCK, blockKey, block);
+    }
+
+    public static Block registerAirPlaceableBlockWithExtras(RegistryKey<Block> blockKey, RegistryKey<Item> itemKey, AirPlaceableBlock block) {
+        Registry.register(Registries.ITEM, itemKey, new AirPlaceableBlockItem(block, new Item.Settings()));
+        return Registry.register(Registries.BLOCK, blockKey, block);
+    }
 
     public static void registerBlocks(){
 
