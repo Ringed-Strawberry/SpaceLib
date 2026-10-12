@@ -7,6 +7,7 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class CommandUtil {
@@ -18,7 +19,7 @@ public class CommandUtil {
                 .requires(OP_ONLY);
     }
 
-    public static SuggestionProvider<ServerCommandSource> commandSuggestion(String... suggestions) {
+    public static SuggestionProvider<ServerCommandSource> commandSuggestionText(Set<String> suggestions) {
         return (context, builder) -> {
             for (String suggestion : suggestions) {
                 builder.suggest(suggestion);
@@ -27,7 +28,7 @@ public class CommandUtil {
         };
     }
 
-    public static SuggestionProvider<ServerCommandSource> commandSuggestion(Integer... suggestions) {
+    public static SuggestionProvider<ServerCommandSource> commandSuggestionInt(Set<Integer> suggestions) {
         return (context, builder) -> {
             for (int suggestion : suggestions) {
                 builder.suggest(suggestion);
