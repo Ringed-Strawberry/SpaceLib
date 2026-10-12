@@ -18,7 +18,7 @@ public class CommandUtil {
                 .requires(OP_ONLY);
     }
 
-    private static SuggestionProvider<ServerCommandSource> CLASS_SUGGESTIONS(String... suggestions) {
+    public static SuggestionProvider<ServerCommandSource> commandSuggestion(String... suggestions) {
         return (context, builder) -> {
             for (String suggestion : suggestions) {
                 builder.suggest(suggestion);
@@ -27,7 +27,7 @@ public class CommandUtil {
         };
     }
 
-    private static SuggestionProvider<ServerCommandSource> CLASS_SUGGESTIONS(Integer... suggestions) {
+    public static SuggestionProvider<ServerCommandSource> commandSuggestion(Integer... suggestions) {
         return (context, builder) -> {
             for (int suggestion : suggestions) {
                 builder.suggest(suggestion);
